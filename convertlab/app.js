@@ -98,6 +98,22 @@ if (typeof document !== 'undefined') {
     update();
   });
 
+  // ----- dark mode -----
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('theme-toggle');
+  function paintThemeButton() {
+    var dark = root.getAttribute('data-theme') === 'dark';
+    themeBtn.textContent = dark ? '☀️' : '🌙';
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  themeBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('convertlab-theme', next); } catch (e) {}
+    paintThemeButton();
+  });
+  paintThemeButton();
+
   selectTab('length');
 }
 

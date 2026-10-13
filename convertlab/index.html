@@ -6,6 +6,15 @@
 <title>ConvertLab | Unit conversions for engineers</title>
 <meta name="description" content="ConvertLab: a free unit converter for engineers. Length, mass, pressure, energy and temperature.">
 <link rel="stylesheet" href="style.css">
+<script>
+  // Runs before the page paints, so there is no light flash in dark mode.
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('convertlab-theme'); } catch (e) {}
+    if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
 </head>
 <body>
 
@@ -15,6 +24,7 @@
     <a href="#converter">Converter</a>
     <a href="#pricing">Pricing</a>
     <a href="../">Portfolio</a>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode"></button>
   </nav>
 </header>
 
