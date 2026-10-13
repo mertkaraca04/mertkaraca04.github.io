@@ -32,7 +32,7 @@
 
 <section class="hero">
   <h1>Unit conversions for engineers.<br>Fast. Free. Accurate.</h1>
-  <p>Length, mass, pressure, energy and temperature, plus a newsvendor and an FX swap calculator.</p>
+  <p>Length, mass, pressure, energy and temperature, plus an FX swap and an OEE calculator.</p>
 </section>
 
 <section id="converter" class="converter">
@@ -55,37 +55,38 @@
     <p id="formula" class="formula"></p>
   </div>
 
-  <div id="panel-newsvendor" hidden>
-    <p class="nv-intro">How much should you stock (or hold in cash) when demand is uncertain? Q* = &mu; + z&middot;&sigma;, where z comes from the critical ratio Cu / (Cu + Co).</p>
-    <div class="nv-grid">
-      <div class="field"><label for="nv-mu">Mean demand <span class="sym">&mu;</span></label><input id="nv-mu" type="number" inputmode="decimal" value="100" step="any"></div>
-      <div class="field"><label for="nv-sigma">Std deviation <span class="sym">&sigma;</span></label><input id="nv-sigma" type="number" inputmode="decimal" value="20" min="0" step="any"></div>
-      <div class="field"><label for="nv-cu">Cost per unit short <span class="sym">(Cu)</span></label><input id="nv-cu" type="number" inputmode="decimal" value="9" min="0" step="any"></div>
-      <div class="field"><label for="nv-co">Cost per unit left over <span class="sym">(Co)</span></label><input id="nv-co" type="number" inputmode="decimal" value="1" min="0" step="any"></div>
-    </div>
-    <div class="nv-results" aria-live="polite">
-      <div class="nv-stat"><span>Critical ratio</span><b id="nv-cr">-</b></div>
-      <div class="nv-stat"><span class="sym">z</span><b id="nv-z">-</b></div>
-      <div class="nv-stat main"><span>Best quantity Q*</span><b id="nv-q">-</b></div>
-    </div>
-    <p id="nv-text" class="formula"></p>
-    <button id="nv-example" class="link-btn" type="button">Try the liquidity-buffer rates (40% / 35.5%)</button>
-  </div>
-
   <div id="panel-fx" hidden>
-    <p class="nv-intro">What should a USD/TRY forward cost? Covered interest parity: F = S &times; (1 + r<sub>TRY</sub> &times; d/365) / (1 + r<sub>USD</sub> &times; d/360). The inputs below are illustrative, not market data, and the result is a theoretical price, not a dealing quote.</p>
-    <div class="nv-grid">
+    <p class="calc-intro">What should a USD/TRY forward cost? Covered interest parity: F = S &times; (1 + r<sub>TRY</sub> &times; d/365) / (1 + r<sub>USD</sub> &times; d/360). The inputs below are illustrative, not market data, and the result is a theoretical price, not a dealing quote.</p>
+    <div class="calc-grid">
       <div class="field"><label for="fx-spot">Spot rate <span class="sym">S</span> (TRY per USD)</label><input id="fx-spot" type="number" inputmode="decimal" value="40" min="0" step="any"></div>
       <div class="field"><label for="fx-days">Days to delivery <span class="sym">d</span></label><input id="fx-days" type="number" inputmode="decimal" value="90" min="0" step="any"></div>
       <div class="field"><label for="fx-try">TRY rate (% per year, Act/365)</label><input id="fx-try" type="number" inputmode="decimal" value="40" step="any"></div>
       <div class="field"><label for="fx-usd">USD rate (% per year, Act/360)</label><input id="fx-usd" type="number" inputmode="decimal" value="4.5" step="any"></div>
     </div>
-    <div class="nv-results" aria-live="polite">
-      <div class="nv-stat"><span>Swap points (F &minus; S)</span><b id="fx-pts">-</b></div>
-      <div class="nv-stat"><span>Annualized premium</span><b id="fx-ann">-</b></div>
-      <div class="nv-stat main"><span>Forward rate F</span><b id="fx-f">-</b></div>
+    <div class="calc-results" aria-live="polite">
+      <div class="calc-stat"><span>Swap points (F &minus; S)</span><b id="fx-pts">-</b></div>
+      <div class="calc-stat"><span>Annualized premium</span><b id="fx-ann">-</b></div>
+      <div class="calc-stat main"><span>Forward rate F</span><b id="fx-f">-</b></div>
     </div>
     <p id="fx-text" class="formula"></p>
+  </div>
+
+  <div id="panel-oee" hidden>
+    <p class="calc-intro">How much of your planned production time really makes good parts at full speed? OEE = Availability &times; Performance &times; Quality. Availability = run time / planned time, Performance = (ideal cycle time &times; units) / run time, Quality = good units / total units.</p>
+    <div class="calc-grid">
+      <div class="field"><label for="oee-planned">Planned production time (min)</label><input id="oee-planned" type="number" inputmode="decimal" value="480" min="0" step="any"></div>
+      <div class="field"><label for="oee-down">Downtime and stops (min)</label><input id="oee-down" type="number" inputmode="decimal" value="60" min="0" step="any"></div>
+      <div class="field"><label for="oee-ct">Ideal cycle time (sec per unit)</label><input id="oee-ct" type="number" inputmode="decimal" value="30" min="0" step="any"></div>
+      <div class="field"><label for="oee-units">Total units produced</label><input id="oee-units" type="number" inputmode="decimal" value="700" min="0" step="any"></div>
+      <div class="field"><label for="oee-defects">Defective units</label><input id="oee-defects" type="number" inputmode="decimal" value="14" min="0" step="any"></div>
+    </div>
+    <div class="calc-results four" aria-live="polite">
+      <div class="calc-stat"><span>Availability</span><b id="oee-a">-</b></div>
+      <div class="calc-stat"><span>Performance</span><b id="oee-p">-</b></div>
+      <div class="calc-stat"><span>Quality</span><b id="oee-q">-</b></div>
+      <div class="calc-stat main"><span>OEE</span><b id="oee-o">-</b></div>
+    </div>
+    <p id="oee-text" class="formula"></p>
   </div>
 </section>
 
