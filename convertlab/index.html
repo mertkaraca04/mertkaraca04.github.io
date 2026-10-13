@@ -54,6 +54,23 @@
     </div>
     <p id="formula" class="formula"></p>
   </div>
+
+  <div id="panel-newsvendor" hidden>
+    <p class="nv-intro">How much should you stock (or hold in cash) when demand is uncertain? Q* = &mu; + z&middot;&sigma;, where z comes from the critical ratio Cu / (Cu + Co).</p>
+    <div class="nv-grid">
+      <div class="field"><label for="nv-mu">Mean demand <span class="sym">&mu;</span></label><input id="nv-mu" type="number" inputmode="decimal" value="100" step="any"></div>
+      <div class="field"><label for="nv-sigma">Std deviation <span class="sym">&sigma;</span></label><input id="nv-sigma" type="number" inputmode="decimal" value="20" min="0" step="any"></div>
+      <div class="field"><label for="nv-cu">Cost per unit short <span class="sym">(Cu)</span></label><input id="nv-cu" type="number" inputmode="decimal" value="9" min="0" step="any"></div>
+      <div class="field"><label for="nv-co">Cost per unit left over <span class="sym">(Co)</span></label><input id="nv-co" type="number" inputmode="decimal" value="1" min="0" step="any"></div>
+    </div>
+    <div class="nv-results" aria-live="polite">
+      <div class="nv-stat"><span>Critical ratio</span><b id="nv-cr">-</b></div>
+      <div class="nv-stat"><span class="sym">z</span><b id="nv-z">-</b></div>
+      <div class="nv-stat main"><span>Best quantity Q*</span><b id="nv-q">-</b></div>
+    </div>
+    <p id="nv-text" class="formula"></p>
+    <button id="nv-example" class="link-btn" type="button">Try the liquidity-buffer rates (40% / 35.5%)</button>
+  </div>
 </section>
 
 <section id="pricing" class="pricing">
