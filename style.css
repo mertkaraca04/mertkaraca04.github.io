@@ -23,7 +23,7 @@ h2{font-size:1.6rem;margin:0 0 22px;display:flex;align-items:center;gap:12px}
 h2::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.5}
 h3{margin:0 0 4px;font-size:1.12rem}
 .hero{padding-top:70px;position:relative}
-.hero::before{content:"";position:absolute;inset:-20px -40px auto -40px;height:340px;background:radial-gradient(60% 70% at 20% 20%,var(--glow),transparent 70%),radial-gradient(40% 50% at 85% 10%,rgba(18,181,166,.16),transparent 70%);z-index:-1}
+.hero::before{content:"";position:absolute;inset:-20px -20px auto -20px;height:340px;background:radial-gradient(60% 70% at 20% 20%,var(--glow),transparent 70%),radial-gradient(40% 50% at 85% 10%,rgba(18,181,166,.16),transparent 70%);z-index:-1}
 .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .eyebrow{font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);font-weight:700;margin:0 0 10px}
 .lead{font-size:1.15rem;color:var(--muted);max-width:640px}
@@ -66,3 +66,8 @@ footer{text-align:center;color:var(--muted);padding:34px 0;font-size:.88rem}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
 .reveal.show{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+@media (max-width:560px){
+  html{scroll-padding-top:92px}
+  .nav{gap:6px 10px;padding:8px 14px}
+  .nav nav{order:3;width:100%;flex-wrap:nowrap;overflow-x:auto;gap:16px;font-size:.9rem;white-space:nowrap;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+}
