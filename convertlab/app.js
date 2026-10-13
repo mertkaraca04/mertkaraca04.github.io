@@ -73,6 +73,19 @@ function newsvendor(mu, sigma, cu, co) {
   return { cr: cr, z: z, q: mu + z * sigma };
 }
 
+// ---------- FX forward / swap pricing (treasury) ----------
+// Covered interest parity for USD/TRY with simple interest:
+//   F = S * (1 + rTRY * d/365) / (1 + rUSD * d/360)
+// TRY money-market rates use Act/365 and USD rates use Act/360. Rates are given in % per year.
+function fxForward(spot, rTryPct, rUsdPct, days) {
+  if (!(spot > 0) || !(days > 0) || !isFinite(rTryPct) || !isFinite(rUsdPct)) return null;
+  var tryLeg = 1 + (rTryPct / 100) * days / 365;
+  var usdLeg = 1 + (rUsdPct / 100) * days / 360;
+  if (!(tryLeg > 0) || !(usdLeg > 0)) return null;
+  var f = spot * tryLeg / usdLeg;
+  return { f: f, points: f - spot, annPremium: (f / spot - 1) * 365 / days * 100 };
+}
+
 // ---------- page wiring (only runs in a browser) ----------
 if (typeof document !== 'undefined') {
   var current = 'length';
@@ -127,15 +140,44 @@ if (typeof document !== 'undefined') {
       ' the mean, and it covers demand about ' + (res.cr * 100).toFixed(1) + '% of the time.';
   }
 
+  var panelFx = document.getElementById('panel-fx');
+  var fx = {
+    spot: document.getElementById('fx-spot'), days: document.getElementById('fx-days'),
+    rTry: document.getElementById('fx-try'), rUsd: document.getElementById('fx-usd'),
+    f: document.getElementById('fx-f'), pts: document.getElementById('fx-pts'),
+    ann: document.getElementById('fx-ann'), text: document.getElementById('fx-text')
+  };
+
+  function updateFx() {
+    var d = parseFloat(fx.days.value);
+    var res = fxForward(parseFloat(fx.spot.value), parseFloat(fx.rTry.value), parseFloat(fx.rUsd.value), d);
+    if (!res) {
+      fx.f.textContent = fx.pts.textContent = fx.ann.textContent = '-';
+      fx.text.textContent = 'Enter a spot rate above 0, a number of days above 0, and both interest rates.';
+      return;
+    }
+    var spotNum = parseFloat(fx.spot.value);
+    fx.f.textContent = res.f.toFixed(4);
+    fx.pts.textContent = (res.points >= 0 ? '+' : '') + res.points.toFixed(4);
+    fx.ann.textContent = res.annPremium.toFixed(2) + '%';
+    var above = res.points >= 0;
+    fx.text.textContent = 'A ' + format(d) + '-day USD/TRY forward is ' + res.f.toFixed(4) + ' against a spot of ' + spotNum.toFixed(4) +
+      ', which is ' + Math.abs(res.points).toFixed(4) + ' TRY ' + (above ? 'above' : 'below') + ' spot (' +
+      Math.abs(res.annPremium).toFixed(2) + '% a year). It is ' + (above ? 'above' : 'below') + ' spot because the TRY rate is ' +
+      (above ? 'higher' : 'lower') + ' than the USD rate; this gap is what an FX swap trades.';
+  }
+
   function selectTab(category) {
     current = category;
     Array.prototype.forEach.call(tabsEl.children, function (b) {
       b.setAttribute('aria-selected', b.dataset.category === category ? 'true' : 'false');
     });
-    var isNv = category === 'newsvendor';
-    panelConvert.hidden = isNv;
-    panelNv.hidden = !isNv;
-    if (isNv) { updateNv(); return; }
+    var special = category === 'newsvendor' || category === 'fx';
+    panelConvert.hidden = special;
+    panelNv.hidden = category !== 'newsvendor';
+    panelFx.hidden = category !== 'fx';
+    if (category === 'newsvendor') { updateNv(); return; }
+    if (category === 'fx') { updateFx(); return; }
     fillUnits(fromUnit, category, DEFAULTS[category][0]);
     fillUnits(toUnit, category, DEFAULTS[category][1]);
     update();
@@ -143,6 +185,7 @@ if (typeof document !== 'undefined') {
 
   var TAB_LIST = Object.keys(CATEGORIES).map(function (k) { return [k, CATEGORIES[k].label]; });
   TAB_LIST.push(['newsvendor', 'Newsvendor']);
+  TAB_LIST.push(['fx', 'FX swap']);
   TAB_LIST.forEach(function (t) {
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'tab'; b.setAttribute('role', 'tab');
@@ -151,6 +194,7 @@ if (typeof document !== 'undefined') {
     tabsEl.appendChild(b);
   });
 
+  [fx.spot, fx.days, fx.rTry, fx.rUsd].forEach(function (el) { el.addEventListener('input', updateFx); });
   [nv.mu, nv.sigma, nv.cu, nv.co].forEach(function (el) { el.addEventListener('input', updateNv); });
   document.getElementById('nv-example').addEventListener('click', function () {
     nv.mu.value = 100; nv.sigma.value = 20; nv.cu.value = 0.40; nv.co.value = 0.355;
@@ -184,4 +228,4 @@ if (typeof document !== 'undefined') {
   selectTab('length');
 }
 
-if (typeof module !== 'undefined') module.exports = { convert: convert, format: format, CATEGORIES: CATEGORIES, invNorm: invNorm, newsvendor: newsvendor };
+if (typeof module !== 'undefined') module.exports = { convert: convert, format: format, CATEGORIES: CATEGORIES, invNorm: invNorm, newsvendor: newsvendor, fxForward: fxForward };

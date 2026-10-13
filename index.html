@@ -119,7 +119,7 @@
   <article class="card">
     <h3>ConvertLab: Unit Converter for Engineers</h3>
     <p class="meta">Claude Code workshop project, 2026</p>
-    <p>A free browser-based unit converter with dark mode and a newsvendor calculator, published here on GitHub Pages.</p>
+    <p>A free browser-based unit converter with dark mode, a newsvendor calculator and a USD/TRY FX swap pricer, published here on GitHub Pages.</p>
     <p class="buttons"><a class="btn" href="convertlab/">Open live demo</a></p>
     <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>GitHub Pages</li></ul>
     <details>
@@ -130,6 +130,7 @@
         <li>Dark mode starts from the device theme and remembers the user's choice.</li>
         <li>Newsvendor tab: critical ratio Cu / (Cu + Co), z from the inverse normal distribution, and best quantity Q* = &mu; + z&middot;&sigma;. It uses the same logic as my liquidity buffer model.</li>
         <li>Checked against Python's NormalDist on 111 probabilities (largest error about 5 in a billion) and three worked test cases.</li>
+        <li>FX swap tab: theoretical USD/TRY forward from covered interest parity, F = S &times; (1 + r<sub>TRY</sub> &times; d/365) / (1 + r<sub>USD</sub> &times; d/360), with swap points and the annualized premium. Checked against exact-fraction reference values and a round-trip test. Illustrative inputs, not a dealing quote.</li>
         <li>Built during a Claude Code workshop. The pricing section on the demo is a mock-up, not a real product.</li>
       </ul>
     </details>

@@ -32,7 +32,7 @@
 
 <section class="hero">
   <h1>Unit conversions for engineers.<br>Fast. Free. Accurate.</h1>
-  <p>Length, mass, pressure, energy and temperature in one clean tool.</p>
+  <p>Length, mass, pressure, energy and temperature, plus a newsvendor and an FX swap calculator.</p>
 </section>
 
 <section id="converter" class="converter">
@@ -70,6 +70,22 @@
     </div>
     <p id="nv-text" class="formula"></p>
     <button id="nv-example" class="link-btn" type="button">Try the liquidity-buffer rates (40% / 35.5%)</button>
+  </div>
+
+  <div id="panel-fx" hidden>
+    <p class="nv-intro">What should a USD/TRY forward cost? Covered interest parity: F = S &times; (1 + r<sub>TRY</sub> &times; d/365) / (1 + r<sub>USD</sub> &times; d/360). The inputs below are illustrative, not market data, and the result is a theoretical price, not a dealing quote.</p>
+    <div class="nv-grid">
+      <div class="field"><label for="fx-spot">Spot rate <span class="sym">S</span> (TRY per USD)</label><input id="fx-spot" type="number" inputmode="decimal" value="40" min="0" step="any"></div>
+      <div class="field"><label for="fx-days">Days to delivery <span class="sym">d</span></label><input id="fx-days" type="number" inputmode="decimal" value="90" min="0" step="any"></div>
+      <div class="field"><label for="fx-try">TRY rate (% per year, Act/365)</label><input id="fx-try" type="number" inputmode="decimal" value="40" step="any"></div>
+      <div class="field"><label for="fx-usd">USD rate (% per year, Act/360)</label><input id="fx-usd" type="number" inputmode="decimal" value="4.5" step="any"></div>
+    </div>
+    <div class="nv-results" aria-live="polite">
+      <div class="nv-stat"><span>Swap points (F &minus; S)</span><b id="fx-pts">-</b></div>
+      <div class="nv-stat"><span>Annualized premium</span><b id="fx-ann">-</b></div>
+      <div class="nv-stat main"><span>Forward rate F</span><b id="fx-f">-</b></div>
+    </div>
+    <p id="fx-text" class="formula"></p>
   </div>
 </section>
 
